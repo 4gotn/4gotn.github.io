@@ -178,45 +178,195 @@
 <p><em>"Every page is a gentle slap reminding us that AI isn’t magic—it’s math wrapped in marketing."</em><br />
 — <strong>Al Turing</strong>, Director, Computing, <strong>University of Manchestor, UK</strong></p>
 </blockquote>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-2"><a class="header" href="#chapter-2">Chapter 2</a></h1>
-<p>Markdown lets you write <strong>bold</strong>, <em>italic</em>, or <code>inline code</code>.</p>
-<p>You can make:</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="about-this-book"><a class="header" href="#about-this-book">About this Book</a></h1>
+<p>Many, many
+people
+assume that  Big AI (e.g.  Lassume Large Language Models, or
+LLMs) are the inevitable and best future path for Artificial
+Intelligence.</p>
+<p>This book invites you to question that assumption.</p>
+<p>To be clear: I use big AI, a lot,     for solo and tactical tasks
+such as condensing my written arguments. But for
+strategic tasks that might be critiqued externally, I need other
+tools that are faster, simpler, and whose reasoning can be explained
+and audited.  So while I do not want to replace big AI,  I want to
+ensure we are   also supporting and exploring alternatives.</p>
+<p>In software engineering (SE), there is very
+little exploration of alternatives
+to LLMs. A recent systematic review found
+only 5% of hundreds of SE LLM papers
+<a href="refs.html#hou2024">considered alternatives</a>.
+This a major methodological
+mistake that ignores simpler and faster methods.  For instance, UCL
+researchers found
+<a href="refs.html#tawosi2023">SVM+TF-IDF methods outperform</a> standard
+"Big AI" for effort estimation (100 times faster, with greater
+accuracy) .</p>
+<p>In SE, one  reason for asking if not LLM, then what?" is that
+software   often exhibits "funneling": i.e. despite internal
+complexity, software
+<a href="refs.html#menzies2007a">behavior converges to few outcomes</a>,
+enabling
+<a href="refs.html#lustosa2025">simpler reasoning</a>.  Funneling  explains how my "BareLogic"  active
+learner can build
+models using  very little data
+for (e.g.)  63   SE multi-objective optimization tasks from the
+<a href="refs.html#menziesmoot">MOOT repository</a>.<br />
+These   tasks are quite diverse and include
+software process decisions, optimizing configuration parameters,
+and tuning learners for better analytics. Successful MOOT modeling
+results in better advice for project managers, better control of
+software options, and enhanced analytics from learners that are
+better tuned to the local data.</p>
+<p>MOOT includes 100,000s of examples with up to  a thousand settings.
+Each example is labelled with up to five effects. In practice,
+obtaining  labels is  slow, expensive and error-prone. Hence the
+<a href="refs.html#settles2009">task of active learners</a>
+like BareLogic is to find the best example(s),
+after requesting the   least number of labels .  To do this,
+BareLogic labels  <code>N=4</code> rest examples, then it:</p>
 <ul>
-<li>Bullet lists</li>
-<li>Numbered lists:
-<ol>
-<li>First</li>
-<li>Second</li>
-</ol>
+<li>Scores and sorts labeled examples by "distance to heaven" (where
+"heaven" is the ideal target for optimization, e.g., weight=0, mpg=max)</li>
+<li>Splits the sort into <code>sqrt(𝑁)</code> <code>best</code> and <code>𝑁−sqrt(𝑁)</code> <code>rest</code> examples.</li>
+<li>Trains a two-class Bayes classifier on the <code>best</code> and <code>rest</code> sets.</li>
+<li>Finds the unlabeled example <code>X</code> that is most likely <code>best</code> via<br />
+<code>argmax(x):log(like(best|X)) - log(log(rest|X))</code></li>
+<li>Labels <code>X</code>, then increments <code>N</code>.</li>
+<li>If <code>X</code> &lt; <code>Stop</code> labeled examples.</li>
+</ul>
+<p>BareLogic was written for teaching purposes as a simple demonstrator
+of   active learning. But in a result consistent with "funneling",
+this
+quick-and-dirty tool achieves near optimal results using   a
+handful of labels.
+As shown by  the histogram, right-hand-side of this figure, across 63
+tasks:</p>
+<ul>
+<li>eight labels yielded 62% of the optimal result;</li>
+<li>16 labels reached nearly 80%,</li>
+<li>32 labels approached 90% optimality,</li>
+<li>64 labels barely improves on 32 labels,</li>
+<li>etc.</li>
+</ul>
+<center>
+<img src="img/63.png">
+<b>
+Figure: 20 runs of BareLogic on 63 multi-objective tasks. <br>  
+Histogram shows mean <tt>(1 − (most − b4.min)/(b4.mu − b4.min))</tt>.   
+<tt>Most</tt>
+is the best example returned by BareLogic.   
+ <tt>b4</tt> are the untreated
+examples.   
+<tt>min</tt> is the optimal example closest to heaven.</b>
+</center>
+<p>The lesson here is that achieving state-of-the-art results can ne
+achieved with smarter questioning, not planetary-scale computation.
+Active learning addresses many common  LLM concerns such as slow
+training times, excessive energy needs, esoteric hardware requirements,
+testability, reproducibility, and  explainability.</p>
+<ul>
+<li>The above figure  was created without billions of parameters.
+Active learners
+need no vast pre-existing knowledge or massive datasets, avoiding
+the colossal energy and specialized hardware demands of large-scale
+AI.</li>
+<li>Further, unlike LLMs where testing is slow and often irreproducible,
+BareLogic's Bayesian active learning is fast (e.g., for 63 tasks
+and 20 repeated trials, this figure was  generated in three minutes on
+a standard   laptop).</li>
+<li>Most importantly, active learning  fosters
+human-AI partnership.
+<ul>
+<li>Unlike opaque LLMs, BareLogic's results are
+explainable via small labeled sets (e.g., <code>N=32</code>).
+Whenever a label is required, humans can understand
+and guide the reasoning.</li>
+<li>The resulting tiny regression tree models offer
+concise, effective, and generalizable insights.</li>
+</ul>
 </li>
 </ul>
-<blockquote>
-<p>Blockquotes look like this.</p>
-</blockquote>
-<p>Images are simple:</p>
-<p><img src="https://via.placeholder.com/100" alt="Alt text" /></p>
-<p>And links too: <a href="https://timm.fyi">Visit timm.fyi</a></p>
-<h2 id="heres-some-code"><a class="header" href="#heres-some-code">Here's some code:</a></h2>
-<pre><code class="language-python">def greet(name):
-    return f"Hello, {name}!"
-print(greet("World"))
+<p>Active learning provides a compelling alternative to sheer scale in AI.</p>
+<ul>
+<li>Its ability to deliver rapid, efficient, and transparent results fundamentally
+questions the "bigger is better" assumption dominating current thinking
+about AI.</li>
+<li>It tell us that intelligence requires more than just size.</li>
+<li>I am not the only one proposing weight loss for AI.
+<ul>
+<li>The success of
+<a href="refs.html#Zeming2024">LLM distillation</a> (shrinking huge models for specific purposes) shows that
+giant models are not always necessary.</li>
+<li>Active learning pushes this idea even
+further, showing that leaner, smarter modeling can achieve great results.</li>
+<li>So
+why not, before we build the behemoth, try something smaller and faster?</li>
+</ul>
+</li>
+</ul>
+<h2 id="about-the-author"><a class="header" href="#about-the-author">About the author:</a></h2>
+<p>Tim Menzies is a ACM Fellow, an IEEE Fellow, a Professor of Computer
+Science at NC State University. He specializing in data-driven,
+explainable, and minimal AI for software engineering. He serves on
+the editorial board of IEEE Transactions on SE and as Editor-in-Chief
+of the Automated Software Engineering journal. More info:
+http://timm.fyi.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="install-the-software"><a class="header" href="#install-the-software">Install the Software</a></h1>
+<p>To demonstrate the message of this book, we use the <code>BareLogic</code> tool.</p>
+<p>Before you install, you need some sofware</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center">essential</th><th style="text-align: left">what</th><th style="text-align: left">notes</th></tr></thead><tbody>
+<tr><td style="text-align: center">✔</td><td style="text-align: left">bash</td><td style="text-align: left">e.g. inside VSCode, or in googlecode, or on a terminal in Linux or Mac, or the WSL for windows</td></tr>
+<tr><td style="text-align: center">✔</td><td style="text-align: left">a good code editor</td><td style="text-align: left">e.g.  vscode, or nvim (but consider the merits of something very lightweight like micro)</td></tr>
+<tr><td style="text-align: center">✔</td><td style="text-align: left">Python</td><td style="text-align: left">version 3.13 (or later)</td></tr>
+<tr><td style="text-align: center">✔</td><td style="text-align: left">Git</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center">✔</td><td style="text-align: left">Gawk</td><td style="text-align: left">or awk, version 5 or later</td></tr>
+<tr><td style="text-align: center">❌</td><td style="text-align: left">plylint</td><td style="text-align: left">or some other static linter</td></tr>
+<tr><td style="text-align: center">❌</td><td style="text-align: left">docco</td><td style="text-align: left">or some other simple documentation generator</td></tr>
+</tbody></table>
+</div>
+<p>Then you need some code and sample data sets</p>
+<pre><code>mkdir newDirectory
+cd newDirectory
+git clone http://github.com/timm/barelogic
+git clone http://github.com/timm/moot
 </code></pre>
-<blockquote>
-<p><em>"A sharp, funny, and surprisingly practical reminder that not everything old is obsolete."</em><br />
-— <strong>Jordan Meng</strong>, Senior Software Engineer, FractalMesh Labs</p>
-</blockquote>
-<blockquote>
-<p><em>"I wish we’d had this when we started integrating LLMs. It would’ve saved us three rewrites and one team meltdown."</em><br />
-— <strong>Tariq Jensen</strong>, Director of AI Integration, CloudQuirk Systems</p>
-</blockquote>
-<blockquote>
-<p><em>"Every junior developer I mentor gets this book. It's like version control for your brain."</em><br />
-— <strong>Mei Zhou</strong>, Principal Engineer &amp; Code Review Troll, OpenCommit Project</p>
-</blockquote>
-<blockquote>
-<p><em>"If you think you know SE, this book will kindly remind you what you forgot to teach your model."</em><br />
-— <strong>Dr. Evi Dent</strong>, Research Lead, Explainable Systems Group, Uni of New Devon</p>
-</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="references"><a class="header" href="#references">References</a></h1>
+<h2 id="h"><a class="header" href="#h">H</a></h2>
+<h3 id="hou2024"><a class="header" href="#hou2024">Hou,2024</a></h3>
+<p>C. Hou, Y. Zhao, Y. Liu, Z. Yang, K. Wang, and et al. 2024. Large Language Models
+for SE: A Systematic Literature Review. TOSEM 33, 8 (Sept. 2024).</p>
+<h2 id="l"><a class="header" href="#l">L</a></h2>
+<h3 id="lustosa2025"><a class="header" href="#lustosa2025">Lustosa,2025</a></h3>
+<p>A. Lustosa and T. Menzies. 2025. Less Noise, More Signal: DRR for Better Opti-
+mizations of SE Tasks. arXiv:2503.21086  https://arxiv.org/abs/2503.21086</p>
+<h2 id="m"><a class="header" href="#m">M</a></h2>
+<h3 id="menzies2007a"><a class="header" href="#menzies2007a">Menzies,2007a</a></h3>
+<p>T. Menzies, D. Owen, and J. Richardson. 2007. The Strangest Thing About Software.
+Computer 40, 1 (2007), 54–60.</p>
+<h3 id="menziesbl"><a class="header" href="#menziesbl">Menzies,BL</a></h3>
+<p>T. Menzies. 2025. BareLogic Python Source Code. https://github.com/timm/
+barelogic/blob/main/src/bl.py.</p>
+<h3 id="menziesmoot"><a class="header" href="#menziesmoot">Menzies,MOOT</a></h3>
+<p>T. Menzies. 2025. MOOT= Many multi-objective optimization tests. https://github.
+com/timm/moot/tree/master/optimize.</p>
+<h2 id="p"><a class="header" href="#p">P</a></h2>
+<h2 id="pearson1902"><a class="header" href="#pearson1902">Pearson,1902</a></h2>
+<p>Pearson, K. (1902). <em>On Lines and Planes of Closest Fit to
+Systems of Points in Space</em>. Philosophical Magazine, 6(2), 559-572.
+https://doi.org/10.1080/14786440209478072</p>
+<h2 id="s"><a class="header" href="#s">S</a></h2>
+<h3 id="settles2009"><a class="header" href="#settles2009">Settles,2009</a></h3>
+<p>D. Settles. 2009. Active learning literature survey. Technical Report 1648. U.
+Wisconsin-Madison Dept of CS.</p>
+<h2 id="t"><a class="header" href="#t">T</a></h2>
+<h3 id="tawosi2023"><a class="header" href="#tawosi2023">Tawosi,2023</a></h3>
+<p>V. Tawosi, R. Moussa, and F. Sarro. 2023. Agile Effort Estimation: Have We Solved
+the Problem Yet? IEEE Trans SE 49, 4 (2023), 2677–2697.</p>
+<h2 id="z"><a class="header" href="#z">Z</a></h2>
+<h3 id="zeming2024"><a class="header" href="#zeming2024">Zeming,2024</a></h3>
+<p>L. Zeming and et al. 2024. Survey on Knowledge Distillation for Large Language
+Models. ACM Trans. Int. Systems &amp; Technology (2024).</p>
 
                     </main>
 
