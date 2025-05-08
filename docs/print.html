@@ -766,23 +766,142 @@ why not, before we build the behemoth, try something smaller and faster?</li>
 </style>
 <h1 id="install-the-software"><a class="header" href="#install-the-software">Install the Software</a></h1>
 <p>To demonstrate the message of this book, we use the <code>BareLogic</code> tool.</p>
-<p>Before you install, you need some sofware</p>
+<h2 id="what-to-instakk-first"><a class="header" href="#what-to-instakk-first">What to Instakk First</a></h2>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: center">essential</th><th style="text-align: left">what</th><th style="text-align: left">notes</th></tr></thead><tbody>
 <tr><td style="text-align: center">✔</td><td style="text-align: left">bash</td><td style="text-align: left">e.g. inside VSCode, or in googlecode, or on a terminal in Linux or Mac, or the WSL for windows</td></tr>
 <tr><td style="text-align: center">✔</td><td style="text-align: left">a good code editor</td><td style="text-align: left">e.g.  vscode, or nvim (but consider the merits of something very lightweight like micro)</td></tr>
 <tr><td style="text-align: center">✔</td><td style="text-align: left">Python</td><td style="text-align: left">version 3.13 (or later)</td></tr>
 <tr><td style="text-align: center">✔</td><td style="text-align: left">Git</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: center">✔</td><td style="text-align: left">Gawk</td><td style="text-align: left">or awk, version 5 or later</td></tr>
+<tr><td style="text-align: center">❌</td><td style="text-align: left">htop</td><td style="text-align: left">or some other cpu minitor</td></tr>
 <tr><td style="text-align: center">❌</td><td style="text-align: left">plylint</td><td style="text-align: left">or some other static linter</td></tr>
 <tr><td style="text-align: center">❌</td><td style="text-align: left">docco</td><td style="text-align: left">or some other simple documentation generator</td></tr>
 </tbody></table>
 </div>
-<p>Then you need some code and sample data sets</p>
-<pre><code>mkdir newDirectory
-cd newDirectory
-git clone http://github.com/timm/barelogic
+<h2 id="install-code-and-data-sets"><a class="header" href="#install-code-and-data-sets">Install code and data sets</a></h2>
+<p>Now you need some code and sample data sets</p>
+<ol start="0">
+<li>
+<p>In a new directory, chack out our test data</p>
+<pre><code>mkdir newDir # call it anything you like
+cd newDir
 git clone http://github.com/timm/moot
+# do not change directories. Goto step 1
 </code></pre>
+</li>
+<li>
+<p>Go to <a href="https://github.com/timm/barelogic">https://github.com/timm/barelogic</a> and click the <strong>Fork</strong> button.</p>
+</li>
+<li>
+<p>Clone your fork to your local machine:</p>
+<pre><code>git clone https://github.com/YOUR_USERNAME/barelogic.git
+cd barelogic
+</code></pre>
+</li>
+<li>
+<p>Fetch all branches and check out the <code>v0.5</code> branch:</p>
+<pre><code>git fetch origin
+git checkout -b v0.5 origin/v0.5
+</code></pre>
+</li>
+<li>
+<p>Create a new branch for your changes.</p>
+<pre><code>git checkout -b my-feature
+</code></pre>
+</li>
+<li>
+<p>Test your install (see below)</p>
+</li>
+<li>
+<p>Now you can start working. Make your edits in this directory. Frequently, push your changes to your on-line repo</p>
+<pre><code>git add . # add waht ever is new
+git commit -m "Describe your changes"
+git push origin my-feature
+</code></pre>
+</li>
+</ol>
+<h2 id="test-your-install"><a class="header" href="#test-your-install">Test your install</a></h2>
+<h3 id="are-you-running-python3"><a class="header" href="#are-you-running-python3">Are you running Python3?</a></h3>
+<pre><code class="language-bash">python3 --version
+</code></pre>
+<p>You should see <code>Python 3.13</code> (or higher).</p>
+<h3 id="is-your-data-in-the-right-place"><a class="header" href="#is-your-data-in-the-right-place">Is your data in the right place?</a></h3>
+<pre><code class="language-bash">cd barelogic/src
+make stats
+</code></pre>
+<p>If this works, you should see something like this:</p>
+<pre><code class="language-bash">    x      y   rows
+------ ------ ------
+     3      1    197 ../../moot/optimize/config/wc+rs-3d-c4-obj1.csv
+     3      1    197 ../../moot/optimize/config/wc+sol-3d-c4-obj1.csv
+     3      1    197 ../../moot/optimize/config/wc+wc-3d-c4-obj1.csv
+...
+</code></pre>
+<p>If this test fails, check you have installed gawk  and that the data is in the right place; i.e. from the src directory, ../../moot/optimize</p>
+<h3 id="is-your-active-learner-working"><a class="header" href="#is-your-active-learner-working">Is your active learner working?</a></h3>
+<pre><code class="language-bash">cd barelogic/src
+python3 -B bl.py --quick | column -s, -t
+</code></pre>
+<p>This will run an experiments. 30 times it will run the active learner using 8,16,20,30,40 samples, then statistically compare
+the results. Best results will be marked with an <code>a</code>; second best <code>b</code>. and so on.</p>
+<pre><code class="language-bash">#['rows'   'lo'     'x'   'y'   'ms'   'b4'        40          20          16          8           'name']
+[398       '0.17'   4     3     5      'c 0.56 '   'a 0.17 '   'a 0.21 '   'a 0.24 '   'b 0.26 '   'auto93']
+</code></pre>
+<p>Notice that everything is "a" from 16 samples and up. This is to say that there was no win here above 16 sampples.</p>
+<h3 id="is-your-tree-learner-working"><a class="header" href="#is-your-tree-learner-working">Is your tree learner working?</a></h3>
+<pre><code class="language-bash">cd barelogic/src
+python3 -B bl.py --tree
+</code></pre>
+<p>This test does the active learning (with 32 samples) then builds a tree from the labeled data.</p>
+<pre><code class="language-bash">auto93.csv
+o{:mu1 0.556 :mu2 0.265 :sd1 0.162 :sd2 0.064}
+ d2h  win    n
+---- ---- ----
+0.50   -4   32
+0.43   13   27    Volume &lt;= 350
+0.39   25   19    |  Model &gt;  80
+0.30   45    2    |  |  origin == 2 ;
+0.36   31   13    |  |  origin == 3
+0.29   49    2    |  |  |  Volume &lt;= 85 ;
+0.37   28   11    |  |  |  Volume &gt;  85
+0.36   31    7    |  |  |  |  Volume &lt;= 91
+0.36   31    5    |  |  |  |  |  Model &gt;  81 ;
+0.36   30    2    |  |  |  |  |  Model &lt;= 81 ;
+0.39   23    4    |  |  |  |  Volume &gt;  91
+0.39   24    2    |  |  |  |  |  Volume &lt;= 107 ;
+0.40   21    2    |  |  |  |  |  Volume &gt;  107 ;
+0.52   -8    4    |  |  origin == 1
+0.44   12    2    |  |  |  Volume &gt;  232 ;
+0.60  -28    2    |  |  |  Volume &lt;= 232 ;
+0.55  -15    8    |  Model &lt;= 80
+0.52   -8    6    |  |  Volume &lt;= 119
+0.43   13    3    |  |  |  Clndrs &gt;  3 ;
+0.60  -28    3    |  |  |  Clndrs &lt;= 3 ;
+0.64  -38    2    |  |  Volume &gt;  119 ;
+0.86  -92    5    Volume &gt;  350
+0.84  -88    2    |  Volume &lt;= 440 ;
+0.87  -95    3    |  Volume &gt;  440 ;
+</code></pre>
+<p>Here:</p>
+<ul>
+<li><code>n</code> is the number of rows in each branch;</li>
+<li><code>;</code> denotes a leaf;</li>
+<li><code>d2h</code> is the distance of the mean score of the rows in each branch to an optimal zero point (so lower numbers are better)</li>
+<li><code>win</code> normalizes d2h as <code>100 - 100 \* int(1 - (d2h-min)/(mu-min))</code> (so higher numbers are better and 100 is best).</li>
+</ul>
+<h3 id="is-your-tree-learner-working-on-all-data-sets"><a class="header" href="#is-your-tree-learner-working-on-all-data-sets">Is your tree learner working, on all data sets?</a></h3>
+<pre><code class="language-bash">cd barelogic/src
+time make trees
+</code></pre>
+<p>This will run the active learner (with 32 samples), then the tree learner, on all data sets.  On my machine (with 10 coy cores) this takes under a minute.
+The thing to check here is that there are no crashes.</p>
+<h2 id="pull-requests"><a class="header" href="#pull-requests">Pull requests</a></h2>
+<p>If you do something really cool, or if you fix a bug in my code, I will ask you for a pull request</p>
+<ul>
+<li>On GitHub, go to your fork and click <strong>"Compare &amp; pull request"</strong>.</li>
+<li>Set the pull request’s base to <code>timm/barelogic</code>, branch <code>v0.5</code>, and compare it with <code>YOUR_USERNAME/my-feature</code>.</li>
+<li>Add a descriptive title and message, then click <strong>"Create pull request"</strong>.</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><style>
 .mdbook-alerts {
   padding: 8px 16px;
