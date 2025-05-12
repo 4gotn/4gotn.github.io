@@ -526,6 +526,90 @@ samples, the 1 more from the tree, these tries select for examples in the unlabe
 <li>Set the pull request’s base to <code>timm/barelogic</code>, branch <code>v0.5</code>, and compare it with <code>YOUR_USERNAME/my-feature</code>.</li>
 <li>Add a descriptive title and message, then click <strong>"Create pull request"</strong>.</li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="tutorial-using-blpy-for-multi-objective-reasoning--active-learning"><a class="header" href="#tutorial-using-blpy-for-multi-objective-reasoning--active-learning">Tutorial: Using <code>bl.py</code> for Multi-Objective Reasoning &amp; Active Learning</a></h1>
+<p>This tutorial explains how to use the <code>bl.py</code> script for finding "good" solutions in your data when you have multiple, possibly conflicting, goals. We'll also see how <strong>active learning</strong> helps achieve this by looking at very few examples. We'll use the <code>auto93.csv</code> dataset, which is about cars.</p>
+<h2 id="1-the-goal-finding-the-best-cars-with-multiple-objectives"><a class="header" href="#1-the-goal-finding-the-best-cars-with-multiple-objectives">1. The Goal: Finding the "Best" Cars with Multiple Objectives</a></h2>
+<p>Imagine you're looking for a car. You probably don't want just <em>any</em> car. You want one that's good in several ways:</p>
+<ul>
+<li>Low weight (<code>Lbs-</code> in <code>auto93.csv</code>)</li>
+<li>Good acceleration (<code>Acc+</code>)</li>
+<li>High miles per gallon (<code>Mpg+</code>)</li>
+</ul>
+<p>The challenge is that these goals often conflict. A super lightweight car might not be the fastest, and a fuel-efficient car might have slower acceleration. This is where <strong>multi-objective reasoning</strong> comes in: finding items that offer the best overall balance or trade-off across these different criteria.</p>
+<p>The <code>bl.py</code> script helps with this by looking at how you've named your columns in the CSV file. A <code>-</code> at the end means "minimize this," and a <code>+</code> means "maximize this."</p>
+<h2 id="2-how-blpy-measures-goodness-the-ydist-function"><a class="header" href="#2-how-blpy-measures-goodness-the-ydist-function">2. How <code>bl.py</code> Measures "Goodness": The <code>ydist</code> Function</a></h2>
+<p>To compare different cars, <code>bl.py</code> needs a single score that summarizes how well a car meets all your objectives. This is done by an <strong>aggregation function</strong> called <code>ydist</code>.</p>
+<p>Here's how <code>ydist</code> works conceptually:</p>
+<ol>
+<li><strong>Normalization</strong>: It takes values from different scales (like weight in pounds and MPG) and converts them to a common 0-to-1 scale.</li>
+<li><strong>Distance from Ideal</strong>: For each of your goals (e.g., <code>Lbs-</code>, <code>Acc+</code>, <code>Mpg+</code>), it measures how far the car's normalized value is from the "perfect" score (0 for minimization goals like <code>Lbs-</code>, and 1 for maximization goals like <code>Acc+</code> and <code>Mpg+</code>).</li>
+<li><strong>Combined Score</strong>: It then combines these individual "distances from ideal" into one overall <code>ydist</code> score. <strong>A lower <code>ydist</code> is better</strong>, indicating the car is closer to the ideal across all your stated objectives.</li>
+</ol>
+<p>To see this in action, you can run <code>bl.py</code> with an example command that processes your data and shows these distances. The <code>eg-data</code> command will load a CSV and print statistics for each column, including objective columns which are the basis for <code>ydist</code>.</p>
+<pre><code class="language-bash">python bl.py --data -f data/auto93.csv
+</code></pre>
+<p>This command processes <code>auto93.csv</code> and shows, among other things, the characteristics of the objective columns (<code>y</code> columns) from which <code>ydist</code> is calculated. While it doesn't directly output the <code>ydist</code> for each row via cthis specific command, the script contains <code>eg-ydist</code> (run via <code>test/ydata.py</code>) that does show this.</p>
+<h2 id="illustrative-output-conceptual-if-eg-ydist-were-run-showing-best-and-worst"><a class="header" href="#illustrative-output-conceptual-if-eg-ydist-were-run-showing-best-and-worst">Illustrative Output (Conceptual, if <code>eg-ydist</code> were run, showing best and worst):</a></h2>
+<pre><code>Clndrs  Volume  HpX  Model  origin  Lbs-  Acc+  Mpg+  ydist
+------  ------  ---  -----  ------  ----  ----  ----  -----
+4       90      48   80     2       2085  21.7  40    0.17
+4       91      67   80     3       1850  13.8  40    0.17
+4       86      65   80     3       2019  16.4  40    0.17
+4       86      64   81     1       1875  16.4  40    0.18
+...
+8       429     198  70     1       4341  10.0  20    0.77
+8       350     165  70     1       3693  11.5  20    0.77
+8       455     225  70     1       4425  10.0  10    0.77
+8       454     220  70     1       4354  9.0   10    0.79
+</code></pre>
+<h2 id="active-learning-smarter-searching-fewer-labels-with-actlearn"><a class="header" href="#active-learning-smarter-searching-fewer-labels-with-actlearn">Active Learning: Smarter Searching, Fewer Labels with actLearn</a></h2>
+<p>Manually checking every single car in a large dataset (i.e., "labeling" it with its performance metrics) can be very time-consuming or expensive. Active learning is a technique to find the best items by looking at only a small, intelligently chosen subset of the data.</p>
+<p><code>bl.py</code> uses the <code>actLearn</code> function for this. Here's the core idea:</p>
+<ul>
+<li><strong>Tiny Start:</strong> It begins by evaluating a very small number of randomly selected cars (e.g., 4 cars, controlled by the <code>-s</code> or <code>--start</code> flag).</li>
+<li><strong>Learn and Query:</strong> Based on what it learns from these initial cars, it decides which unlabeled car would be most informative to evaluate next. It does this by:</li>
+<li>Maintaining a small set of the <code>best</code> cars found so far and a <code>rest</code> set.</li>
+<li>For new candidate cars, it calculates how <code>like</code>ly they are to belong to the i
+<code>best</code> set versus the <code>rest</code> set (using a simplified Naive Bayes approach).</li>
+<li>It then uses an "acquisition strategy" (set by <code>-a</code> or <code>--acq</code>, e.g., <code>xploit</code> to focus on known good areas, <code>xplore</code> to investigate uncertain areas) to pick the next car to "label" (i.e., calculate its <code>ydist</code>).
+Iterate: It repeats this process, adding the newly evaluated car to its knowledge, and refining its understanding of what makes a "good" car.
+Stop: It continues until it has evaluated a pre-set small number of cars (e.g., 32 by default, controlled by <code>-S</code> or <code>--Stop</code>).</li>
+</ul>
+<p>The goal of actLearn is to identify a high-quality set of cars using far fewer evaluations than if you checked every single one.</p>
+<h2 id="running-an-active-learning-experiment"><a class="header" href="#running-an-active-learning-experiment">Running an Active Learning Experiment:</a></h2>
+<p>You can simulate this process using the <code>--actLearn</code>
+command-line flag (which, internally, calles the `eg__actLearn`` function)
+and. This will run the active learning strategy and report on how well it performed.</p>
+<pre><code class="language-bash">python bl.py --actLearn -f data/auto93.csv -S 32
+</code></pre>
+<h2 id="interpreting-the-output-from-eg-actlearn"><a class="header" href="#interpreting-the-output-from-eg-actlearn">Interpreting the Output from eg-actLearn:</a></h2>
+<p>The script will output an "object" (a summary of results). Key things to look for:</p>
+<ul>
+<li>win: A score (ideally close to 1.0) indicating how close the best car found by actLearn is to the true best car in the entire dataset (if it were known). A higher "win" means active learning did a good job.</li>
+<li>mu1: The ydist score of the best car found by actLearn.
+lo0, mu0, hi0: These show the minimum, average, and maximum ydist if all cars were evaluated. This gives you a baseline to compare mu1 against.</li>
+<li>stop: The number of cars actLearn actually "labeled" or evaluated (e.g., 32).</li>
+<li>ms: The average time in milliseconds per run.</li>
+</ul>
+<p>An example output might look like:</p>
+<pre><code>o{:win 0.87, :rows 398, :x 4, :y 3, :lo0 0.17, :mu0 0.56, :hi0 0.93, :mu1 0.22, :sd1 0.06, :ms 5, :stop 32, :name auto93}
+</code></pre>
+<p>This (hypothetical) output would mean that by only looking at 32 cars, actLearn found a car with a ydist of 0.22. This is 87% of the way from the average car's score (0.56) towards the best possible score in the dataset (0.17). This demonstrates finding a very good solution with minimal labeling effort.</p>
+<h2 id="why-bare-logic"><a class="header" href="#why-bare-logic">Why "Bare Logic"?</a></h2>
+<p>bl.py is termed "bare logic" because it implements these AI concepts (data handling, normalization, distance metrics, a simplified Bayesian approach for active learning) from fundamental principles. It avoids large external machine learning libraries, which makes the code:</p>
+<ul>
+<li>Transparent: Easier to see how calculations are done.</li>
+<li>Lightweight: Minimal dependencies.</li>
+<li>Educational: Good for understanding the core mechanics.</li>
+</ul>
+<h2 id="to-experiment-further"><a class="header" href="#to-experiment-further">To Experiment Further:</a></h2>
+<ul>
+<li>Use the -f flag with python bl.py [example_function] to specify your own CSV data file. For example, python bl.py --actLearn -f path/to/your/data.csv.</li>
+<li>Change the -s (start evaluations) and -S (total evaluations) flags to see how performance changes with more or fewer labels. E.g., python bl.py --actLearn -s 10 -S 50.</li>
+<li>Test different active learning strategies with the -a flag (e.g., python bl.py --actLearn -a xplore).</li>
+<li>Explore other eg-* functions by running python bl.py -h to see what else the script can do. (Note: The example functions are prefixed with eg_ in the code, so on the command line, you'd use --functionName).</li>
+</ul>
+<p>By using bl.py and its command-line flags, you can perform sophisticated multi-objective reasoning and leverage active learning to find good solutions efficiently, even when data labeling is a constraint.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="references"><a class="header" href="#references">References</a></h1>
 <h2 id="h"><a class="header" href="#h">H</a></h2>
 <h3 id="hou2024"><a class="header" href="#hou2024">Hou,2024</a></h3>
