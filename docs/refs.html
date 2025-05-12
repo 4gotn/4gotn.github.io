@@ -155,16 +155,100 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="references"><a class="header" href="#references">References</a></h1>
+                        <style>
+.mdbook-alerts {
+  padding: 8px 16px;
+  margin-bottom: 16px;
+  border-left: 0.25em solid var(--mdbook-alerts-color);
+}
+
+.mdbook-alerts > *:first-child {
+  margin-top: 0;
+}
+
+.mdbook-alerts > *:last-child {
+  margin-bottom: 0;
+}
+
+.mdbook-alerts-title {
+  display: flex;
+  font-weight: 600;
+  align-items: center;
+  line-height: 1;
+  color: var(--mdbook-alerts-color);
+  text-transform: capitalize;
+}
+
+.mdbook-alerts-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-right: 0.2em;
+  background-color: currentColor;
+  -webkit-mask: no-repeat center / 100%;
+  mask: no-repeat center / 100%;
+  -webkit-mask-image: var(--mdbook-alerts-icon);
+  mask-image: var(--mdbook-alerts-icon);
+}
+
+.mdbook-alerts-note {
+  --mdbook-alerts-color: rgb(9, 105, 218);
+  /* https://icon-sets.iconify.design/material-symbols/info-outline-rounded/ */
+  --mdbook-alerts-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 17q.425 0 .713-.288T13 16v-4q0-.425-.288-.712T12 11q-.425 0-.712.288T11 12v4q0 .425.288.713T12 17m0-8q.425 0 .713-.288T13 8q0-.425-.288-.712T12 7q-.425 0-.712.288T11 8q0 .425.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12q0-3.35-2.325-5.675T12 4Q8.65 4 6.325 6.325T4 12q0 3.35 2.325 5.675T12 20m0-8"%2F%3E%3C%2Fsvg%3E');
+}
+
+.mdbook-alerts-tip {
+  --mdbook-alerts-color: rgb(26, 127, 55);
+  /* https://icon-sets.iconify.design/material-symbols/lightbulb-outline-rounded/ */
+  --mdbook-alerts-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 22q-.825 0-1.412-.587T10 20h4q0 .825-.587 1.413T12 22m-3-3q-.425 0-.712-.288T8 18q0-.425.288-.712T9 17h6q.425 0 .713.288T16 18q0 .425-.288.713T15 19zm-.75-3q-1.725-1.025-2.738-2.75T4.5 9.5q0-3.125 2.188-5.312T12 2q3.125 0 5.313 2.188T19.5 9.5q0 2.025-1.012 3.75T15.75 16zm.6-2h6.3q1.125-.8 1.738-1.975T17.5 9.5q0-2.3-1.6-3.9T12 4Q9.7 4 8.1 5.6T6.5 9.5q0 1.35.613 2.525T8.85 14M12 14"%2F%3E%3C%2Fsvg%3E');
+}
+
+.mdbook-alerts-important {
+  --mdbook-alerts-color: rgb(130, 80, 223);
+  /* https://icon-sets.iconify.design/material-symbols/chat-info-outline-rounded/ */
+  --mdbook-alerts-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 7q.425 0 .713-.288T13 6q0-.425-.288-.712T12 5q-.425 0-.712.288T11 6q0 .425.288.713T12 7m0 8q.425 0 .713-.288T13 14v-4q0-.425-.288-.712T12 9q-.425 0-.712.288T11 10v4q0 .425.288.713T12 15m-6 3l-2.3 2.3q-.475.475-1.088.213T2 19.575V4q0-.825.588-1.412T4 2h16q.825 0 1.413.588T22 4v12q0 .825-.587 1.413T20 18zm-.85-2H20V4H4v13.125zM4 16V4z"%2F%3E%3C%2Fsvg%3E');
+}
+
+.mdbook-alerts-warning {
+  --mdbook-alerts-color: rgb(154, 103, 0);
+  /* https://icon-sets.iconify.design/material-symbols/warning-outline-rounded/ */
+  --mdbook-alerts-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M2.725 21q-.275 0-.5-.137t-.35-.363q-.125-.225-.137-.488t.137-.512l9.25-16q.15-.25.388-.375T12 3q.25 0 .488.125t.387.375l9.25 16q.15.25.138.513t-.138.487q-.125.225-.35.363t-.5.137zm1.725-2h15.1L12 6zM12 18q.425 0 .713-.288T13 17q0-.425-.288-.712T12 16q-.425 0-.712.288T11 17q0 .425.288.713T12 18m0-3q.425 0 .713-.288T13 14v-3q0-.425-.288-.712T12 10q-.425 0-.712.288T11 11v3q0 .425.288.713T12 15m0-2.5"%2F%3E%3C%2Fsvg%3E');
+}
+
+.mdbook-alerts-caution {
+  --mdbook-alerts-color: rgb(207, 34, 46);
+  /* https://icon-sets.iconify.design/material-symbols/brightness-alert-outline-rounded/ */
+  --mdbook-alerts-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 17q.425 0 .713-.288T13 16q0-.425-.288-.712T12 15q-.425 0-.712.288T11 16q0 .425.288.713T12 17m0-4q.425 0 .713-.288T13 12V8q0-.425-.288-.712T12 7q-.425 0-.712.288T11 8v4q0 .425.288.713T12 13m-3.35 7H6q-.825 0-1.412-.587T4 18v-2.65L2.075 13.4q-.275-.3-.425-.662T1.5 12q0-.375.15-.737t.425-.663L4 8.65V6q0-.825.588-1.412T6 4h2.65l1.95-1.925q.3-.275.663-.425T12 1.5q.375 0 .738.15t.662.425L15.35 4H18q.825 0 1.413.588T20 6v2.65l1.925 1.95q.275.3.425.663t.15.737q0 .375-.15.738t-.425.662L20 15.35V18q0 .825-.587 1.413T18 20h-2.65l-1.95 1.925q-.3.275-.662.425T12 22.5q-.375 0-.737-.15t-.663-.425zm.85-2l2.5 2.5l2.5-2.5H18v-3.5l2.5-2.5L18 9.5V6h-3.5L12 3.5L9.5 6H6v3.5L3.5 12L6 14.5V18zm2.5-6"%2F%3E%3C%2Fsvg%3E');
+}
+
+</style>
+<h1 id="references"><a class="header" href="#references">References</a></h1>
+<h2 id="c"><a class="header" href="#c">C</a></h2>
+<h3 id="columbia2003"><a class="header" href="#columbia2003">Columbia,2003</a></h3>
+<p>Columbia Accident Investigation Board (CAIB). (2003).
+<a href="https://sma.nasa.gov/SignificantIncidents/assets/columbia-accident-investigation-board-report-volume-1.pdf"><em>Report Volume I</em></a>. National Aeronautics and Space Administration.</p>
+<h2 id="f"><a class="header" href="#f">F</a></h2>
+<h3 id="fisher2012"><a class="header" href="#fisher2012">Fisher,2012</a></h3>
+<p>Danyel Fisher, Rob DeLine, Mary Czerwinski, and Steven Drucker. 2012. Interactions with big data analytics. interactions 19, 3 (May + June 2012), 50–59. https://doi.org/10.1145/2168931.2168943</p>
+<h3 id="fu2017"><a class="header" href="#fu2017">Fu,2017</a></h3>
+<p>Fu, W., Menzies (2017).
+<a href="https://arxiv.org/pdf/1703.00133">Easy over Hard: A Case Study on Deep Learning</a>,
+In Proceedings of the 2017 11th Joint Meeting on Foundations of Software Engineering (ESEC/FSE 2017). Association for Computing Machinery, New York, NY, USA, 49–60. https://doi.org/10.1145/3106237.3106256</p>
 <h2 id="h"><a class="header" href="#h">H</a></h2>
 <h3 id="hou2024"><a class="header" href="#hou2024">Hou,2024</a></h3>
 <p>C. Hou, Y. Zhao, Y. Liu, Z. Yang, K. Wang, and et al. 2024.
 <a href="https://arxiv.org/pdf/2308.10620">Large Language Models for SE: A Systematic Literature Review</a>. TOSEM 33, 8 (Sept. 2024).</p>
+<h3 id="hutson2018"><a class="header" href="#hutson2018">Hutson,2018</a></h3>
+<p>Matthew Hutson ,
+<a href="https://www.science.org/doi/10.1126/science.359.6377.725">Artificial intelligence faces reproducibility crisis</a>. Science 359, 725-726 (2018).DOI:10.1126/science.359.6377.725</p>
 <h2 id="l"><a class="header" href="#l">L</a></h2>
 <h3 id="lustosa2025"><a class="header" href="#lustosa2025">Lustosa,2025</a></h3>
 <p>A. Lustosa and T. Menzies. 2025.
 <a href="https://arxiv.org/pdf/2503.21086">Less Noise, More Signal: DRR for Better Optimizations of SE Tasks</a> arXiv:2503.21086  https://arxiv.org/abs/2503.21086</p>
 <h2 id="m"><a class="header" href="#m">M</a></h2>
+<h3 id="majumder2018"><a class="header" href="#majumder2018">Majumder,2018</a></h3>
+<p>Majumder, S., Balaji, N., Brey, K., Fu, W., &amp; Menzies, T. (2018).
+<a href="https://arxiv.org/pdf/1802.05319">500+ times faster than deep learning</a>. In Proceedings of the 15th International Conference on Mining Software Repositories. ACM.</p>
 <h3 id="menzies2007a"><a class="header" href="#menzies2007a">Menzies,2007a</a></h3>
 <p>T. Menzies, D. Owen, and J. Richardson. 2007. <a href="https://ieeexplore.ieee.org/iel5/2/4069176/04069195.pdf?casa_token=CYPQ2kPOjmsAAAAA:0jMU2xs4VePD5_6iQi-r2Bo2smb8mvesunTdPqvdcb2WTlYW4hD7DiWwSLaOguUzpfvCkx761g">The Strangest Thing About Software</a>
 Computer 40, 1 (2007), 54–60.</p>
@@ -174,6 +258,10 @@ barelogic/blob/main/src/bl.py.</p>
 <h3 id="menziesmoot"><a class="header" href="#menziesmoot">Menzies,MOOT</a></h3>
 <p>T. Menzies. 2025. MOOT= Many multi-objective optimization tests. https://github.
 com/timm/moot/tree/master/optimize.</p>
+<h2 id="n"><a class="header" href="#n">N</a></h2>
+<h3 id="nair2018"><a class="header" href="#nair2018">Nair,2018</a></h3>
+<p>Nair, V., Menzies, T., Siegmund, N., &amp; Apel, S. (2018).
+<a href="https://arxiv.org/pdf/1702.05701">Using bad learners to find good configurations</a>. <em>Proceedings of the 2018 26th ACM Joint Meeting on European Software Engineering Conference and Symposium on the Foundations of Software Engineering</em>, 448-459.</p>
 <h2 id="p"><a class="header" href="#p">P</a></h2>
 <h2 id="pearson1902"><a class="header" href="#pearson1902">Pearson,1902</a></h2>
 <p>Pearson, K. (1902). <em>On Lines and Planes of Closest Fit to
@@ -183,10 +271,17 @@ https://doi.org/10.1080/14786440209478072</p>
 <h3 id="settles2009"><a class="header" href="#settles2009">Settles,2009</a></h3>
 <p>D. Settles. 2009. <a href="https://minds.wisconsin.edu/bitstream/handle/1793/60660/TR1648.pdf?sequence=1&amp;isAllowed=y.">Active learning literature survey</a>. Technical Report 1648. U.
 Wisconsin-Madison Dept of CS.</p>
+<h3 id="strubell2018"><a class="header" href="#strubell2018">Strubell,2018</a></h3>
+<p>Strubell, E., Ganesh, A., &amp; McCallum, A. (2019).
+<a href="https://aclanthology.org/P19-1355.pdf">Energy and Policy Considerations for Deep Learning in NLP</a>. <em>Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics</em>, 3645-3650.</p>
 <h2 id="t"><a class="header" href="#t">T</a></h2>
 <h3 id="tawosi2023"><a class="header" href="#tawosi2023">Tawosi,2023</a></h3>
 <p>V. Tawosi, R. Moussa, and F. Sarro. 2023.
 <a href="https://arxiv.org/pdf/2201.05401">Agile Effort Estimation: Have We Solved the Problem Yet?</a> IEEE Trans SE 49, 4 (2023), 2677–2697.</p>
+<h2 id="x"><a class="header" href="#x">X</a></h2>
+<h3 id="xu2015"><a class="header" href="#xu2015">Xu,2015</a></h3>
+<p>Tianyin Xu, Long Jin, Xuepeng Fan, Yuanyuan Zhou, Shankar Pasupathy, and Rukma Talwadker. 2015.
+<a href="https://dl.acm.org/doi/10.1145/2786805.2786852">Hey, you have given me too many knobs!</a>: understanding and dealing with over-designed configuration in system software. In Proceedings of the 2015 10th Joint Meeting on Foundations of Software Engineering (ESEC/FSE 2015). Association for Computing Machinery, New York, NY, USA, 307–319. https://doi.org/10.1145/2786805.2786852</p>
 <h2 id="z"><a class="header" href="#z">Z</a></h2>
 <h3 id="zeming2024"><a class="header" href="#zeming2024">Zeming,2024</a></h3>
 <p>L. Zeming and et al. 2024.
