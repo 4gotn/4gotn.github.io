@@ -749,84 +749,180 @@ only 13 (5%) papers compared their approach to non-neural baselines. <a href="#f
 </style>
 <h1 id="just-enough-data"><a class="header" href="#just-enough-data">Just Enough Data</a></h1>
 <img src="0/../img/jewel.png" align=right width=300>
-<p>Ready for a perspective that might change how you see data?</p>
+Ready for a perspective that might change how you see data?
 <blockquote>
-<p>Menzies's 4th Law: For Software Engineering (SE), the best thing to do with most data is to throw it away.</p>
+<p><a href="0/../refs.html#menzies2025a">Menzies's 4th Law</a>: For Software Engineering (SE), the best thing
+to do with most data is to throw it away.</p>
 </blockquote>
-<p>(Now, I'm talking about tasks like regression, classification, and optimization. Those fancy generative AI models that write poems or paint pictures? They do seem to gobble up billions of data points, fair enough.)</p>
-<p>For many common problems, if you give me a data table, I'm telling you: chopping out rows and columns often makes your models better. Sounds nuts, right?
-But many AI gurus have found that a tiny set of 'key' variables calls the shots for the rest of the model. Nail these keys, and controlling the whole shebang becomes a walk in the park.</p>
-<p>This isn't some new fad. These "keys" have been popping up in AI for ages, wearing different disguises: principal components, variable subset selection, narrows, master variables, and backdoors.</p>
-<p>In 1895,  the Italian economist Vilfredo Pareto
-coined his famous Pareto Principle when he said 80% of the effects come from 20% of the causes.
-This result pops up everywhere: e.g.
-80% of software bugs might come from 20% of modules, 80% of sales from 20% of clients., etc,</p>
-<p>(Actually, it often feels even more extreme. I often  do not see 80:20 but more like
-1000:1 since, in my experiences,  a tiny fraction of factors dictates almost everything.)</p>
+<p>(Now, here I'm talking about tasks like regression, classification, and
+optimization. Those fancy generative AI models that write poems or
+paint pictures? They do seem to gobble up billions of data points,
+fair enough.)</p>
+<p>For many common problems, if you give me a data table, I'm telling
+you: chopping out rows and columns often makes your models better.
+Sounds nuts, right?  But many researchers  have found that a tiny set
+of <a href="0/../refs.html#menzies2007a">'key' variables</a> calls the shots for the rest of the model. Nail
+these keys, and controlling the whole shebang becomes a walk in the
+park.</p>
+<p>This isn't some new fad. These "keys" have been popping up in AI
+for ages, wearing different disguises: principal components, variable
+subset selection, narrows, master variables, and backdoors.</p>
+<p>In 1895,  the Italian economist Vilfredo Pareto coined his famous
+Pareto Principle when he said 80% of the effects come from 20% of
+the causes.  This result pops up everywhere: e.g.<br />
+<a href="0/../refs.html#ostrand2004">80% of software bugs might come from 20% of modules</a>,
+80% of sales from 20% of
+clients., etc,</p>
+<p>(Actually, it often feels even more extreme. I often  do not see
+80:20 but more like 1000:1 since, in my experiences,  a tiny fraction
+of factors dictates almost everything.)</p>
 <img align=right width=200 src="0/../img/pca.png">
-<p>Moving forward now to 1902, Pearson noticed that even in datasets with many dimensions, a handful of principal components captured the main "drift" of the data.
-For example, in the data shown at right, simply looking left-to-right or up-to-down (along the original axes) might not capture the overall direction or main variation in the data.
-Instead, Pearson's PCA (principal component analysis)
-finds a new, synthesized dimension. This single synthesized dimension (see the big arrow, at right) is often the best way to model the data's primary structure</p>
-<p>Pearson's math for PCA might make your eyes glaze over, but the core idea is pretty simple.
-If you want to see the "direction" of your data rows:</p>
+<p>Moving forward now to 1902,
+<a href="0/../refs.html#pearson1902">Pearson</a> noticed that even in datasets
+with many dimensions, a handful of principal components captured
+the main "drift" of the data.  For example, in the data shown at
+right, simply looking left-to-right or up-to-down (along the original
+axes) might not capture the overall direction or main variation in
+the data.  Instead, Pearson's PCA (principal component analysis)
+finds a new, synthesized dimension. This single synthesized dimension
+(see the big arrow, at right) is often the best way to model the
+data's primary structure</p>
+<p>Pearson's math for PCA might make your eyes glaze over, but the
+core idea is pretty simple.  If you want to see the "direction" of
+your data rows:</p>
 <ul>
 <li>Figure out a way to measure the distance between rows<sup class="footnote-reference" id="fr-1-1"><a href="#footnote-1">1</a></sup>.</li>
-<li>Draw a line between two rows that are super far apart, let's call them A and B.</li>
-<li>Draw a second line at a right angle to that first one.</li>
-<li>Plot every other data point based on where it lands relative to these two lines<sup class="footnote-reference" id="fr-2-1"><a href="#footnote-2">2</a></sup>.</li>
+<li>Draw a line between two rows that are super far apart, let's call
+them A and B.</li>
+<li>Draw a second line at a right angle to that first
+one.</li>
+<li>Plot every other data point based on where it lands relative
+to these two lines<sup class="footnote-reference" id="fr-2-1"><a href="#footnote-2">2</a></sup>.</li>
 </ul>
 <img align=right width=200 src="0/../img/fastmap.png">
-<p>Check out this analysis on a spreadsheet with 20 columns and 800 rows describing software classes (think "lines of code," "number of unique symbols," etc.). The red dots are code with known bugs.</p>
-<p>Now imagine yourself trying to understand the raw data (800 rows, 20 numbers). All you might see is a  jumbled mess.
-But after this trick, everything lines up like soldiers on parade, with the bad-boy defective codes clearly visible on the right.</p>
-<p>The lesson is crystal clear: problems, and the data they spit out, often have a simpler, hidden structure. And you can use this simplicity to your advantage.</p>
+<p>Check out this analysis on a spreadsheet with 20 columns and 800
+rows describing software classes (think "lines of code," "number
+of unique symbols," etc.). The red dots are code with known bugs.</p>
+<p>Now imagine yourself trying to understand the raw data (800 rows,
+20 numbers). All you might see is a  jumbled mess.  But after this
+trick, everything lines up like soldiers on parade, with the bad-boy
+defective codes clearly visible on the right.</p>
+<p>The here lesson is  clear: problems, and the data they spit out,
+often have a simpler, hidden structure. And you can use this
+simplicity to your advantage.</p>
 <p>For instance:</p>
 <ul>
 <li>
-<p>Amarel's Narrows (1960s): Back in the '60s, Amarel spotted "narrows" in search problems – tiny sets of essential variable settings. Miss these, and you're lost [11]. His trick? Create "macros" to jump between these narrows, like secret passages in a maze, speeding up the search big time.</p>
+<p><a href="0/../refs.html#amarel1960s">Amarel's Narrows</a> (1960s): Back in the '60s, Amarel spotted "narrows"
+in search problems – tiny sets of essential variable settings. Miss
+these, and you're lost [11]. His trick? Create "macros" to jump
+between these narrows, like secret passages in a maze, speeding up
+the search big time.</p>
 </li>
 <li>
-<p>Kohavi &amp; John's Variable Pruning (1990s): Fast forward to the '90s, Kohavi and John showed you could chuck out up to 80% of variables in some datasets and still get great classification accuracy [13]. Sound familiar? It's Amarel's idea again: focus on the VIP variables, not the whole crowd.</p>
+<p><a href="0/../refs.html#kohavi1997">Kohavi &amp; John</a> 's Variable Pruning (1990s): Fast forward to the
+'90s, Kohavi and John showed you could chuck out up to 80% of
+variables in some datasets and still get great classification
+accuracy [13]. Sound familiar? It's Amarel's idea again: focus on
+the VIP variables, not the whole crowd.</p>
 </li>
 <li>
-<p>Crawford &amp; Baker's ISAMP (1990s): Around the same time, constraint satisfaction folks found that "random search with retries" was surprisingly effective. Crawford and Baker's ISAMP tool would randomly poke around a model until it hit a dead end [12]. Instead of fussing, ISAMP would just note where it got stuck, hit reset, and try a different random path. Why did this wacky method work? They figured models have a few "master variables" (our keys!) pulling the strings. Trying to check every setting is a waste of time if only a few matter. If you're stuck, don't tiptoe – jump to a whole new area.</p>
+<p><a href="0/../refs.html#crawford1994">Crawford &amp; Baker</a>'s ISAMP (1990s): Around the same time, constraint
+satisfaction folks found that "random search with retries" was
+surprisingly effective. Crawford and Baker's ISAMP tool would
+randomly poke around a model until it hit a dead end [12]. Instead
+of fussing, ISAMP would just note where it got stuck, hit reset,
+and try a different random path. Why did this wacky method work?
+They figured models have a few "master variables" (our keys!) pulling
+the strings. Trying to check every setting is a waste of time if
+only a few matter. If you're stuck, don't tiptoe – jump to a whole
+new area.</p>
 </li>
 <li>
-<p>Williams et al.'s Backdoors: Williams and his colleagues found that if you run a random search enough times, the same few variable settings pop up in all good solutions [10]. Set these magic variables first, and crazy-long searches suddenly became quick and easy. They called this the "backdoor" to reducing computational complexity. Pretty tricky, right?</p>
+<p><a href="0/../refs.html#williams2002">Williams et al.</a>'s Backdoors: Williams and his colleagues found
+that if you run a random search enough times, the same few variable
+settings pop up in all good solutions [10]. Set these magic variables
+first, and crazy-long searches suddenly became quick and easy. They
+called this the "backdoor" to reducing computational complexity.
+Pretty tricky, right?</p>
 </li>
 <li>
-<p>Modern Feature Selection: Today's machine learning is built on this. Techniques like LASSO regression (which shrinks less important variable coefficients, sometimes to zero) or using feature importance scores from decision trees are all about finding and focusing on those powerhouse variables.</p>
+<p>Modern Feature Selection: Today's machine learning is built on
+this. Techniques like LASSO regression (which shrinks less important
+variable coefficients, sometimes to zero) or using feature importance
+scores from decision trees are all about finding and focusing on
+those powerhouse variables.</p>
 </li>
 <li>
-<p>Knowledge Distillation: Another cool, modern take on this is knowledge distillation. Here, a large, complex 'teacher' model (trained on tons of data) transfers its 'knowledge' to a much smaller, simpler 'student' model. The student model learns to mimic the teacher's outputs, effectively capturing the essential insights without all the bulk. It's like getting the CliffNotes version of a massive textbook, but it still aces the test.</p>
+<p><a href="0/../refs.html#zeming2024">Knowledge Distillation</a>: Another cool, modern take on this is
+knowledge distillation. Here, a large, complex 'teacher' model
+(trained on tons of data) transfers its 'knowledge' to a much
+smaller, simpler 'student' model. The student model learns to mimic
+the teacher's outputs, effectively capturing the essential insights
+without all the bulk. It's like getting the CliffNotes version of
+a massive textbook, but it still aces the test.</p>
 </li>
 </ul>
-<p>Other work  in semi-supervised learning backs this up: you don't need to obsess over all your data. This field leans on a few cool ideas:</p>
+<p>Other work  in <a href="0/../refs.html#van-engelen2020">semi-supervised learning</a>
+tells us that
+: you don't
+need to obsess over all your data. Semi-supervised
+learners rely on a few central
+ideas:</p>
 <ul>
-<li>Continuity/Smoothness Assumption: Points close together probably share the same label. No big jumps in meaning for tiny data shifts.</li>
-<li>Cluster Assumption: Data likes to hang out in clumps. Points in the same clump likely share a label. Decision boundaries should fall in the sparse areas between clumps.</li>
-<li>Manifold Assumption: Your high-dimensional data often chills out on a simpler, lower-dimensional surface (the "manifold").
-These assumptions basically mean your data isn't a completely random mess; it has structure.</li>
+<li><strong>Continuity/Smoothness Assumption</strong>: Points close together probably
+share the same label. No big jumps in meaning for tiny data shifts.</li>
+<li><strong>Cluster Assumption</strong>: Data likes to hang out in clumps. Points in
+the same clump likely share a label. Decision boundaries should
+fall in the sparse areas between clumps.</li>
+<li><strong>Manifold Assumption</strong>:
+Your high-dimensional data often chills out on a simpler,
+lower-dimensional surface (the "manifold").  These assumptions
+basically mean your data isn't a completely random mess; it has
+structure.</li>
 </ul>
-<p>If you know about the manifold assumption [73] and the Johnson-Lindenstrauss lemma [74] (which says you can project high-D data to lower-D space while mostly preserving distances), you're probably nodding along. But the data slashing you can do in, say, SE data is truly mind-blowing.</p>
-<p>For instance, Chen, Kocaguneli, Tu, Peters, and Xu et al. found they could predict GitHub issue close times, effort, and defects even after ditching labels for a whopping 80%, 91%, 97%, 98%, and even 100% (respectively) of their project data [65, 70-72, 75]. Massive datasets with thousands of rows? Sometimes, just a few dozen samples will do the trick [76] – maybe because software project data is full of repeating patterns [78] or follows power laws [77] (where a few items are hugely frequent/important, and most are rare).</p>
-<p>So, next time you're drowning in data, remember the Great Data Toss-Away. Less can seriously be more.</p>
+<p>There's also maths to back up these assumptions.
+The
+<a href="0/../refs.html#johnson1984">Johnson-Lindenstrauss</a> lemma  which says you can project high-D
+data to lower-D space while mostly preserving distances.
+We do not have to go into the details of that result but, long story short, it is telling
+us that complex data can often be approximated by a much simpler data set.
+For instance,
+<a href="0/../refs.html#kocaguneli2013">Kocaguneli</a>,
+<a href="0/../refs.html#tu2022">Tu</a>,
+<a href="0/../refs.html#peters2015">Peters</a>, and
+<a href="0/../refs.html#xu2021">Xu et al.</a> found
+they could predict GitHub issue close times, effort, and defects
+even after ditching labels for a whopping 80%, 91%, 97%, 98%, and
+even 100% (respectively) of their project data.
+Massive datasets with thousands of rows? Sometimes, just a few dozen
+samples will <a href="0/../refs.html#menzies2008">do the trick</a> – maybe because software project
+data is <a href="0/../refs.html#hindle2012">full of repeating patterns</a> or follows
+<a href="0/../refs.html#lin2015">power laws</a>
+(where a few items are hugely frequent/important, and most are
+rare).</p>
+<p>So, next time you're drowning in data, remember the Great Data
+Toss-Away. Less can seriously be more.</p>
 <hr>
 <ol class="footnote-definition"><li id="footnote-1">
-<p>According to David Aha, the distance between two points A,B is \(\sum_i(D(A_i,B_i)^2)^{0.5}\)
-(calculated over all the independent x columns). For symbolic columns,
-\(D(x,y) = x!=y\).
+<p>According to instance-based
+reasoning guru <a href="0/../refs.html#aha1991">David Aha</a>, the distance between two points A,B
+is \(\sum_i(D(A_i,B_i)^2)^{0.5}\)
+(calculated over all the independent x columns). For symbolic
+columns, \(D(x,y) = x!=y\).
 For numerics, \(D(x,y)=abs(x′−y′)\)
-where <em>x'</em> is x normalized 0..1 min..max. For missing values, assume maximum distances. For example, if
-<em>x,y</em> are both missing, then D=1. If one is missing then we make the assumption that maximizes the distance; e.g.:
-<em>x=x if x!="?" else (1 if y&lt;0.5 else 0)</em> <a href="#fr-1-1">↩</a></p>
+where <em>x'</em> is x normalized 0..1 min..max. For missing values,
+assume maximum distances. For example, if <em>x,y</em> are both missing,
+then D=1. If one is missing then we make the assumption that
+maximizes the distance; e.g.: <em>x=x if x!="?" else (1 if y&lt;0.5 else
+0)</em> <a href="#fr-1-1">↩</a></p>
 </li>
 <li id="footnote-2">
-<p>Let <em>A,B</em> be <img align=right width=100 src="0/../img/triangle.png">  two distance points,
-separated by distance <em>c</em>. Let a point P have  a distance <em>a,b</em> to the points <em>A,B</em>.
-The cosine rule says <em>P</em> has  an <em>x</em> position
-\(x=\frac{a^2 + c^c - b^2}{2c}\) and Pythagoras says <em>P</em> has a <em>y</em> position of \(y=(a^2-x^2)^{0.5}\). <a href="#fr-2-1">↩</a></p>
+<p>Let <em>A,B</em> be <img align=right width=100 src="0/../img/triangle.png">
+two distance points, separated by distance <em>c</em>. Let a point P have
+a distance <em>a,b</em> to the points <em>A,B</em>.  The cosine rule says <em>P</em> has
+an <em>x</em> position \(x=\frac{a^2 + c^c - b^2}{2c}\) and Pythagoras
+says <em>P</em> has a <em>y</em> position of \(y=(a^2-x^2)^{0.5}\). <a href="#fr-2-1">↩</a></p>
 </li>
 </ol><div style="break-before: page; page-break-before: always;"></div><style>
 .mdbook-alerts {
@@ -1459,10 +1555,18 @@ lo0, mu0, hi0: These show the minimum, average, and maximum ydist if all cars we
 <h3 id="aha1991"><a class="header" href="#aha1991">Aha,1991</a></h3>
 <p>Aha, D.W., Kibler, D. &amp; Albert, M.K.
 <a href="https://link.springer.com/content/pdf/10.1007/BF00153759.pdf">Instance-based learning algorithms</a>. Mach Learn 6, 37–66 (1991). https://doi.org/10.1007/BF00153759</p>
+<h3 id="amarel1960s"><a class="header" href="#amarel1960s">Amarel,1960s</a></h3>
+<p>S. Amarel, "Program Synthesis as a Theory Formation Task: Problem Representations and Solution Methods" in Machine Learning: An Artificial Intelligence Approach: Volume II, Morgan Kaufmann, pp. 499-569, 1986.
+THis paper, written in the 1960s, was reprinted in this collection.</p>
 <h2 id="c"><a class="header" href="#c">C</a></h2>
+<h3 id="chapelle2006"><a class="header" href="#chapelle2006">Chapelle,2006</a></h3>
+<p>Chapelle, Olivier, Bernhard Scholkopf, and Alexander Zien. "Semi-supervised learning (chapelle, o. et al., eds.; 2006)[book reviews]." IEEE Transactions on Neural Networks 20.3 (2009): 542-542.</p>
 <h3 id="columbia2003"><a class="header" href="#columbia2003">Columbia,2003</a></h3>
 <p>Columbia Accident Investigation Board (CAIB). (2003).
 <a href="https://sma.nasa.gov/SignificantIncidents/assets/columbia-accident-investigation-board-report-volume-1.pdf"><em>Report Volume I</em></a>. National Aeronautics and Space Administration.</p>
+<h3 id="crawford1994"><a class="header" href="#crawford1994">Crawford,1994</a></h3>
+<p>J. Crawford and A. Baker,
+<a href="https://cdn.aaai.org/AAAI/1994/AAAI94-168.pdf">"Experimental Results on the Application of Satisfiability Algorithms to Scheduling Problems"</a>, Proc. American Assoc. Artificial Intelligence (AAAI 94), pp. 1092-1097, 1994.</p>
 <h2 id="f"><a class="header" href="#f">F</a></h2>
 <h3 id="fisher2012"><a class="header" href="#fisher2012">Fisher,2012</a></h3>
 <p>Danyel Fisher, Rob DeLine, Mary Czerwinski, and Steven Drucker. 2012. Interactions with big data analytics. interactions 19, 3 (May + June 2012), 50–59. https://doi.org/10.1145/2168931.2168943</p>
@@ -1471,13 +1575,25 @@ lo0, mu0, hi0: These show the minimum, average, and maximum ydist if all cars we
 <a href="https://arxiv.org/pdf/1703.00133">Easy over Hard: A Case Study on Deep Learning</a>,
 In Proceedings of the 2017 11th Joint Meeting on Foundations of Software Engineering (ESEC/FSE 2017). Association for Computing Machinery, New York, NY, USA, 49–60. https://doi.org/10.1145/3106237.3106256</p>
 <h2 id="h"><a class="header" href="#h">H</a></h2>
+<h3 id="hindle2012"><a class="header" href="#hindle2012">Hindle,2012</a></h3>
+<p>A. Hindle, E. T. Barr, Z. Su, M. Gabel, and P. Devanbu, “On the naturalness of software,” in Proc. 34th Int. Conf. Softw. Eng. (ICSE), Piscataway, NJ, USA: IEEE Press, 2012, pp. 837–847.</p>
 <h3 id="hou2024"><a class="header" href="#hou2024">Hou,2024</a></h3>
 <p>C. Hou, Y. Zhao, Y. Liu, Z. Yang, K. Wang, and et al. 2024.
 <a href="https://arxiv.org/pdf/2308.10620">Large Language Models for SE: A Systematic Literature Review</a>. TOSEM 33, 8 (Sept. 2024).</p>
 <h3 id="hutson2018"><a class="header" href="#hutson2018">Hutson,2018</a></h3>
 <p>Matthew Hutson ,
 <a href="https://www.science.org/doi/10.1126/science.359.6377.725">Artificial intelligence faces reproducibility crisis</a>. Science 359, 725-726 (2018).DOI:10.1126/science.359.6377.725</p>
+<h2 id="j"><a class="header" href="#j">J</a></h2>
+<h3 id="johnson1984"><a class="header" href="#johnson1984">Johnson,1984</a></h3>
+<p>W. B. Johnson and J. Lindenstrauss, “Extensions of lipschitz mappings into a hilbert space,” Contemporary Math., vol. 26, pp. 189–206, 1984.</p>
+<h2 id="k"><a class="header" href="#k">K</a></h2>
+<h3 id="kocaguneli2013"><a class="header" href="#kocaguneli2013">Kocaguneli,2013</a></h3>
+<p>E. Kocaguneli, T. Menzies, J. Keung, D. Cok, and R. Madachy, “Active learning and effort estimation: Finding the essential content of software effort estimation data,” IEEE Trans. Softw. Eng., vol. 39, no. 8, pp. 1040–1053, Aug.2013.</p>
+<h3 id="kohavi1997"><a class="header" href="#kohavi1997">Kohavi,1997</a></h3>
+<p>R. Kohavi and G. H. John, "Wrappers for Feature Subset Selection", Artificial Intelligence, vol. 97, no. 1–2, pp. 273-324, 1997.</p>
 <h2 id="l"><a class="header" href="#l">L</a></h2>
+<h3 id="lin2015"><a class="header" href="#lin2015">Lin,2015</a></h3>
+<p>Z. Lin and J. Whitehead, “Why power laws? An explanation from fine-grained code changes,” in Proc. IEEE/ACM 12th Work. Conf. Mining Softw. Repositories, Piscataway, NJ, USA: IEEE Press, 2015, pp. 68–75.</p>
 <h3 id="lustosa2025"><a class="header" href="#lustosa2025">Lustosa,2025</a></h3>
 <p>A. Lustosa and T. Menzies. 2025.
 <a href="https://arxiv.org/pdf/2503.21086">Less Noise, More Signal: DRR for Better Optimizations of SE Tasks</a> arXiv:2503.21086  https://arxiv.org/abs/2503.21086</p>
@@ -1494,18 +1610,25 @@ barelogic/blob/main/src/bl.py.</p>
 <h3 id="menziesmoot"><a class="header" href="#menziesmoot">Menzies,MOOT</a></h3>
 <p>T. Menzies. 2025. MOOT= Many multi-objective optimization tests. https://github.
 com/timm/moot/tree/master/optimize.</p>
-<h3 id=""><a class="header" href="#"></a></h3>
-<p>T. Menzies,2025a
-<a href="https://www.computer.org/csdl/journal/ts/2025/03/10869331/23X97eE4Dv2">"Retrospective: Data Mining Static Code Attributes to Learn Defect Predictors"</a> in IEEE Transactions on Software Engineering, vol. 51, no. 03, pp. 858-863, March 2025, doi: 10.1109/TSE.2025.3537406.</p>
+<h3 id="menzies2008"><a class="header" href="#menzies2008">Menzies,2008</a></h3>
+<p>T. Menzies, B. Turhan, A. Bener, G. Gay, B. Cukic, and Y. Jiang, “Implications of ceiling effects in defect predictors,” in Proc. 4th Int. Workshop Predictor Models Softw. Eng., 2008, pp. 47–54.</p>
+<h3 id="menzies2025a"><a class="header" href="#menzies2025a">Menzies,2025a</a></h3>
+<p><a href="https://www.computer.org/csdl/journal/ts/2025/03/10869331/23X97eE4Dv2">"Retrospective: Data Mining Static Code Attributes to Learn Defect Predictors"</a> in IEEE Transactions on Software Engineering, vol. 51, no. 03, pp. 858-863, March 2025, doi: 10.1109/TSE.2025.3537406.</p>
 <h2 id="n"><a class="header" href="#n">N</a></h2>
 <h3 id="nair2018"><a class="header" href="#nair2018">Nair,2018</a></h3>
 <p>Nair, V., Menzies, T., Siegmund, N., &amp; Apel, S. (2018).
 <a href="https://arxiv.org/pdf/1702.05701">Using bad learners to find good configurations</a>. <em>Proceedings of the 2018 26th ACM Joint Meeting on European Software Engineering Conference and Symposium on the Foundations of Software Engineering</em>, 448-459.</p>
+<h2 id="o"><a class="header" href="#o">O</a></h2>
+<h3 id="ostrand2004"><a class="header" href="#ostrand2004">Ostrand,2004</a></h3>
+<p>Thomas J. Ostrand, Elaine J. Weyuker, and Robert M. Bell. 2004.
+<a href="https://userweb.cs.txstate.edu/~rp31/papersSQ/OstrandWeyukerBell_draft.pdf">Where the bugs are</a>. SIGSOFT Softw. Eng. Notes 29, 4 (July 2004), 86–96. https://doi.org/10.1145/1013886.1007524</p>
 <h2 id="p"><a class="header" href="#p">P</a></h2>
-<h2 id="pearson1902"><a class="header" href="#pearson1902">Pearson,1902</a></h2>
+<h3 id="pearson1902"><a class="header" href="#pearson1902">Pearson,1902</a></h3>
 <p>Pearson, K. (1902). <em>On Lines and Planes of Closest Fit to
 Systems of Points in Space</em>. Philosophical Magazine, 6(2), 559-572.
 https://doi.org/10.1080/14786440209478072</p>
+<h3 id="peters2015"><a class="header" href="#peters2015">Peters,2015</a></h3>
+<p>F. Peters, T. Menzies, and L. Layman, “Lace2: Better privacy-preserving data sharing for cross project defect prediction,” in Proc. IEEE/ACM 37th IEEE Int. Conf. Softw. Eng., vol. 1, 2015, pp. 801–811.</p>
 <h2 id="s"><a class="header" href="#s">S</a></h2>
 <h3 id="settles2009"><a class="header" href="#settles2009">Settles,2009</a></h3>
 <p>D. Settles. 2009. <a href="https://minds.wisconsin.edu/bitstream/handle/1793/60660/TR1648.pdf?sequence=1&amp;isAllowed=y.">Active learning literature survey</a>. Technical Report 1648. U.
@@ -1517,10 +1640,21 @@ Wisconsin-Madison Dept of CS.</p>
 <h3 id="tawosi2023"><a class="header" href="#tawosi2023">Tawosi,2023</a></h3>
 <p>V. Tawosi, R. Moussa, and F. Sarro. 2023.
 <a href="https://arxiv.org/pdf/2201.05401">Agile Effort Estimation: Have We Solved the Problem Yet?</a> IEEE Trans SE 49, 4 (2023), 2677–2697.</p>
+<h3 id="tu2022"><a class="header" href="#tu2022">Tu,2022</a></h3>
+<p>H. Tu and T. Menzies, “Frugal: unlocking semi-supervised learning for software analytics,” in Proc. ASE, Piscataway, NJ, USA: IEEE Press, 2022, pp. 394–406.</p>
+<h2 id="v"><a class="header" href="#v">V</a></h2>
+<h3 id="van-engelen2020"><a class="header" href="#van-engelen2020">Van Engelen,2020</a></h3>
+<p>Van Engelen, Jesper E., and Holger H. Hoos.
+<a href="https://link.springer.com/content/pdf/10.1007/s10994-019-05855-6.pdf">"A survey on semi-supervised learning."</a> Machine learning 109.2 (2020): 373-440.</p>
+<h2 id="w"><a class="header" href="#w">W</a></h2>
+<h3 id="williams2002"><a class="header" href="#williams2002">Williams,2002</a></h3>
+<p>R. Williams, C. P. Gomes and B. Selman, "Backdoors to Typical Case Complexity", Proc. IJCAI, 2003, [online] Available: www.cs.cornell.edu/gomes/papers/backdoors.pdf.</p>
 <h2 id="x"><a class="header" href="#x">X</a></h2>
 <h3 id="xu2015"><a class="header" href="#xu2015">Xu,2015</a></h3>
 <p>Tianyin Xu, Long Jin, Xuepeng Fan, Yuanyuan Zhou, Shankar Pasupathy, and Rukma Talwadker. 2015.
 <a href="https://dl.acm.org/doi/10.1145/2786805.2786852">Hey, you have given me too many knobs!</a>: understanding and dealing with over-designed configuration in system software. In Proceedings of the 2015 10th Joint Meeting on Foundations of Software Engineering (ESEC/FSE 2015). Association for Computing Machinery, New York, NY, USA, 307–319. https://doi.org/10.1145/2786805.2786852</p>
+<h3 id="xu2021"><a class="header" href="#xu2021">Xu,2021</a></h3>
+<p>Z. Xu , “A comprehensive comparative study of clustering-based unsupervised defect prediction models,” J. Syst. Softw., vol. 172, 2021, Art. no. 110862.</p>
 <h2 id="z"><a class="header" href="#z">Z</a></h2>
 <h3 id="zeming2024"><a class="header" href="#zeming2024">Zeming,2024</a></h3>
 <p>L. Zeming and et al. 2024.
